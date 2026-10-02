@@ -1,0 +1,39 @@
+name: Build Android APK
+on:
+  push:
+    branches:
+      - "**"
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Build APK
+        shell: bash
+        run: |
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            ./gradlew assembleDebug
+          else
+            echo "No gradlew found"
+            exit 1
+          fi
+      - name: Find APK
+        shell: bash
+        run: find . -type f -name "*.apk" -print
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-apk
+          path: "**/*.apk"
+          if-no-files-found: error
