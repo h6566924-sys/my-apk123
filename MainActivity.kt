@@ -1,329 +1,940 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول المشاريع الذكي إلى APK - V6 مصلح 100%</title>
+    <title>محول المشاريع الذكي إلى APK - النسخة النهائية</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; padding: 20px; direction: rtl; color:#e2e8f0; }
-        .container { max-width: 950px; margin: 0 auto; background: #1e293b; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; border:1px solid #334155; }
-        .header { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; padding: 30px; text-align: center; }
-        .header h1 { font-size: 24px; margin-bottom: 8px; }
-        .content { padding: 25px; }
-        .section { margin-bottom: 20px; padding: 20px; border: 1px solid #334155; border-radius: 15px; background:#0f172a; }
-        .section-title { font-size: 17px; color: #22c55e; margin-bottom: 12px; font-weight: bold; }
-        .btn { padding: 12px 18px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin: 4px; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-primary { background: #22c55e; color: white; }
-        .btn-secondary { background: #334155; color: #e2e8f0; }
-        .btn-success { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; }
-        .btn-danger { background: #ef4444; color: white; }
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; margin-bottom: 6px; color: #94a3b8; font-weight: 600; font-size:13px; }
-        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 11px; border: 1px solid #334155; border-radius: 8px; font-size: 14px; background:#1e293b; color:#e2e8f0; }
-        .file-upload { border: 2px dashed #334155; border-radius: 12px; padding: 30px; text-align: center; cursor: pointer; }
-        .file-upload:hover { border-color: #22c55e; background: #1e293b; }
-        .status-message { padding: 12px; border-radius: 8px; margin-top: 12px; display: none; font-size: 13px; white-space: pre-wrap; }
-        .status-message.success { background: #14532d; color: #bbf7d0; border: 1px solid #22c55e; display: block; }
-        .status-message.error { background: #450a0a; color: #fecaca; border: 1px solid #ef4444; display: block; }
-        .status-message.info { background: #1e293b; color: #93c5fd; border: 1px solid #334155; display: block; }
-        .project-info { background: #1e293b; border-radius: 10px; padding: 12px; margin-top: 12px; display: none; border:1px solid #334155; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px; direction: rtl;
+        }
+        .container {
+            max-width: 950px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 30px; text-align: center;
+        }
+        .header h1 { font-size: 26px; margin-bottom: 10px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px; }
+        .section {
+            margin-bottom: 25px; padding: 20px;
+            border: 2px solid #e0e0e0; border-radius: 15px;
+        }
+        .section-title {
+            font-size: 18px; color: #333; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px; font-weight: bold;
+        }
+        .btn {
+            padding: 12px 20px; border: none; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; display: inline-flex;
+            align-items: center; gap: 8px; margin: 5px;
+        }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #f0f0f0; color: #333; }
+        .btn-secondary:hover:not(:disabled) { background: #e0e0e0; }
+        .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4); }
+        .btn-danger { background: #ff4757; color: white; }
+        .btn-danger:hover:not(:disabled) { background: #ff3838; }
+        .btn-back { background: #ffa502; color: white; font-size: 16px; padding: 14px 28px; }
+        .btn-back:hover:not(:disabled) { background: #e69500; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;
+        }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: #667eea; }
+        .file-upload {
+            border: 3px dashed #e0e0e0; border-radius: 15px; padding: 40px;
+            text-align: center; cursor: pointer; transition: all 0.3s;
+        }
+        .file-upload:hover { border-color: #667eea; background: #f8f9ff; }
+        .file-upload.dragover { border-color: #667eea; background: #f0f4ff; }
+        .status-message {
+            padding: 15px; border-radius: 10px; margin-top: 15px;
+            display: none; font-size: 14px; line-height: 1.6;
+        }
+        .status-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .status-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .status-message.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; display: block; }
+        .project-info {
+            background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px; display: none;
+        }
         .project-info.show { display: block; }
-        .info-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #334155; font-size:13px; }
-        .file-list { margin-top: 12px; max-height: 250px; overflow-y: auto; }
-        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #1e293b; border:1px solid #334155; border-radius: 6px; margin-bottom: 6px; font-size:12px; }
-        .tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .tab { padding: 8px 16px; background: #334155; border-radius: 8px; cursor: pointer; font-size:13px; }
-        .tab.active { background: #22c55e; color: white; }
+        .info-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }
+        .info-item:last-child { border-bottom: none; }
+        .info-label { font-weight: 600; color: #666; }
+        .info-value { color: #333; font-weight: bold; }
+        .progress-bar {
+            width: 100%; height: 8px; background: #e0e0e0;
+            border-radius: 10px; overflow: hidden; margin-top: 15px; display: none;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%; transition: width 0.3s;
+        }
+        .download-links { margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; display: none; }
+        .download-links.show { display: block; }
+        .download-link {
+            display: block; padding: 15px; background: white; border: 2px solid #e0e0e0;
+            border-radius: 8px; margin-bottom: 10px; text-decoration: none; color: #333;
+            transition: all 0.3s; word-break: break-all; font-weight: bold;
+        }
+        .download-link:hover { border-color: #667eea; transform: translateX(-5px); }
+        .download-link.direct { background: #d4edda; border-color: #28a745; color: #155724; }
+        .file-list { margin-top: 15px; max-height: 250px; overflow-y: auto; }
+        .file-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 8px;
+        }
+        .file-item .file-name { flex: 1; font-size: 13px; word-break: break-all; }
+        .file-item .file-size { color: #666; font-size: 12px; margin: 0 10px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab {
+            padding: 10px 20px; background: #f0f0f0; border-radius: 8px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .repo-list { max-height: 220px; overflow-y: auto; margin-top: 10px; }
-        .repo-item { padding: 10px; background: #1e293b; border:1px solid #334155; border-radius: 6px; margin-bottom: 6px; cursor: pointer; }
-        .repo-item.selected { background: #22c55e; color: white; }
-        .file-preview { background: #020617; color: #e2e8f0; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; max-height: 250px; overflow: auto; margin-top: 10px; display: none; white-space: pre-wrap; }
-        .file-preview.show { display: block; }
-        textarea.code-input { width: 100%; min-height: 220px; padding: 10px; border: 1px solid #334155; border-radius: 8px; font-family: monospace; font-size: 12px; background:#020617; color:#e2e8f0; }
-        .download-links { margin-top: 15px; padding: 15px; background: #14532d; border-radius: 10px; display: none; border:1px solid #22c55e; }
-        .download-links.show { display: block; }
-        .download-link { display: block; padding: 12px; background: #1e293b; border: 1px solid #22c55e; border-radius: 8px; margin-bottom: 8px; text-decoration: none; color: #bbf7d0; }
+        .repo-list { max-height: 250px; overflow-y: auto; margin-top: 15px; }
+        .repo-item {
+            padding: 12px; background: #f8f9fa; border-radius: 8px; margin-bottom: 8px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .repo-item:hover { background: #e9ecef; transform: translateX(-5px); }
+        .repo-item.selected { background: #667eea; color: white; }
+        .warning-box {
+            background: #fff3cd; color: #856404; border: 1px solid #ffeaa7;
+            padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px;
+        }
+        .history-item {
+            padding: 15px; background: #f8f9fa; border-radius: 8px;
+            margin-bottom: 10px; border-right: 4px solid #667eea;
+        }
+        .history-item.success { border-right-color: #28a745; }
+        .history-item.failed { border-right-color: #dc3545; }
+        .history-item.pending { border-right-color: #ffc107; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .history-title { font-weight: bold; color: #333; }
+        .history-date { font-size: 12px; color: #666; }
+        .history-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .history-btn {
+            padding: 6px 12px; border: none; border-radius: 6px;
+            font-size: 12px; cursor: pointer; text-decoration: none;
+            display: inline-block; color: white;
+        }
+        .history-btn.download { background: #28a745; }
+        .history-btn.view { background: #17a2b8; }
+        .history-btn.delete { background: #dc3545; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #334155; border-top: 2px solid #22c55e; border-radius: 50%; animation: spin 1s linear infinite; }
+        .spinner {
+            display: inline-block; width: 18px; height: 18px; border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        textarea.code-input {
+            width: 100%; min-height: 250px; padding: 12px; border: 2px solid #e0e0e0;
+            border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px;
+            resize: vertical; direction: ltr; text-align: left;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; background: #f8f9fa; border-bottom: 2px solid #e0e0e0;
+        }
+        .nav-bar h2 { font-size: 18px; color: #333; }
+        .empty-state {
+            text-align: center; padding: 40px; color: #999;
+        }
+        .empty-state-icon { font-size: 60px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧠 محول المشاريع الذكي إلى APK - V6 مصلح</h1>
-            <p>يدعم جميع الملفات + يصلح أخطاء ZIP + SDK 34/35 + تحميل APK مضمون</p>
+            <h1>🧠 محول المشاريع الذكي إلى APK</h1>
+            <p>النسخة النهائية - يقبل جميع الملفات + حفظ سجل البناء + تنزيل مباشر</p>
         </div>
-        <div class="content">
-            <div class="section">
-                <div class="section-title">1. ربط GitHub</div>
-                <div class="input-group"><label>GitHub Token (repo + workflow):</label><input type="password" id="githubToken" placeholder="ghp_..."></div>
-                <button class="btn btn-primary" onclick="testConnection()">🔗 اختبار</button>
-                <button class="btn btn-danger" onclick="clearToken()">🗑️ مسح</button>
-                <div id="connectionStatus" class="status-message"></div>
-            </div>
-            <div class="section">
-                <div class="section-title">2. مستودع البناء</div>
-                <button class="btn btn-secondary" onclick="refreshRepos()">🔄 تحديث</button>
-                <button class="btn btn-primary" onclick="useSelectedRepo()">📌 استخدام</button>
-                <button class="btn btn-secondary" onclick="createNewRepo()">➕ جديد</button>
-                <div class="repo-list" id="repoList"></div>
-                <div id="repoStatus" class="status-message"></div>
-            </div>
-            <div class="section">
-                <div class="section-title">3. أضف مشروعك (يقبل أي نوع)</div>
-                <div class="tabs">
-                    <div class="tab active" onclick="switchTab(event, 'files')">📁 ملفات (أي نوع)</div>
-                    <div class="tab" onclick="switchTab(event, 'zip')">📦 ZIP</div>
-                    <div class="tab" onclick="switchTab(event, 'code')">📝 كود مباشر</div>
+
+        <!-- شريط التنقل -->
+        <div class="nav-bar">
+            <h2 id="pageTitle">🏠 الصفحة الرئيسية</h2>
+            <button class="btn btn-back" onclick="goHome()" id="backBtn" style="display: none;">
+                🏠 العودة للرئيسية
+            </button>
+        </div>
+
+        <!-- الصفحة الرئيسية -->
+        <div class="page active" id="mainPage">
+            <div class="content">
+                <div class="warning-box">
+                    ⚠️ <strong>تنبيه هام:</strong> يجب أن يحتوي GitHub Token على صلاحيات <code>repo</code> و <code>workflow</code>.
+                    الموقع يقبل الآن <strong>جميع أنواع الملفات</strong> (ZIP, Java, Kotlin, Dart, Python, HTML, JS, صور...).
                 </div>
-                <div id="filesTab" class="tab-content active">
-                    <div class="file-upload" id="fileUpload" onclick="document.getElementById('fileInput').click()">
-                        <p>📁 انقر لاختيار ملفات أو اسحبها هنا</p><p style="font-size:11px;color:#94a3b8">يقبل: Java, Kotlin, Dart, HTML, JS, صور، أي ملف</p>
+
+                <!-- القسم 1: ربط GitHub -->
+                <div class="section">
+                    <div class="section-title"><span>1</span><span>ربط GitHub</span></div>
+                    <div class="input-group">
+                        <label>GitHub Token:</label>
+                        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
                     </div>
-                    <input type="file" id="fileInput" multiple style="display:none" onchange="handleFilesUpload(event)">
+                    <button class="btn btn-primary" onclick="testConnection()">🔗 اختبار الاتصال</button>
+                    <button class="btn btn-danger" onclick="clearToken()">🗑️ مسح</button>
+                    <div id="connectionStatus" class="status-message"></div>
                 </div>
-                <div id="zipTab" class="tab-content">
-                    <div class="file-upload" onclick="document.getElementById('zipInput').click()"><p>📦 اختر ZIP</p><p style="font-size:11px;color:#94a3b8">يتم فحص الـ ZIP قبل القراءة (PK)</p></div>
-                    <input type="file" id="zipInput" accept=".zip,application/zip,*/*" style="display:none" onchange="handleZipUpload(event)">
+
+                <!-- القسم 2: المستودع -->
+                <div class="section">
+                    <div class="section-title"><span>2</span><span>مستودع البناء</span></div>
+                    <button class="btn btn-secondary" onclick="refreshRepos()">🔄 تحديث المستودعات</button>
+                    <button class="btn btn-primary" onclick="useSelectedRepo()">📌 استخدام المحدد</button>
+                    <button class="btn btn-secondary" onclick="createNewRepo()">➕ إنشاء مستودع جديد</button>
+                    <div class="repo-list" id="repoList"></div>
+                    <div id="repoStatus" class="status-message"></div>
                 </div>
-                <div id="codeTab" class="tab-content">
-                    <div class="input-group"><label>اسم الملف:</label><input type="text" id="codeFileName" placeholder="MainActivity.kt أو index.html" value="MainActivity.kt"></div>
-                    <div class="input-group"><label>الكود:</label><textarea id="codeInput" class="code-input" placeholder="الصق كودك هنا..."></textarea></div>
-                    <button class="btn btn-primary" onclick="processCode()">💾 حفظ</button>
-                    <button class="btn btn-secondary" onclick="previewCode()">👁️ معاينة</button>
+
+                <!-- القسم 3: إضافة المشروع -->
+                <div class="section">
+                    <div class="section-title"><span>3</span><span>أضف مشروعك (يدعم جميع الأنواع)</span></div>
+
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab(event, 'files')">📁 ملفات (أي نوع)</div>
+                        <div class="tab" onclick="switchTab(event, 'zip')">📦 ملف ZIP</div>
+                        <div class="tab" onclick="switchTab(event, 'code')">📝 لصق الكود مباشرة</div>
+                    </div>
+
+                    <div id="filesTab" class="tab-content active">
+                        <div class="file-upload" id="fileUpload" onclick="document.getElementById('fileInput').click()">
+                            <p style="font-size: 40px; margin-bottom: 10px;">📁</p>
+                            <p style="color: #666;">انقر هنا لاختيار الملفات أو اسحبها هنا</p>
+                            <p style="color: #999; font-size: 12px; margin-top: 10px;">
+                                ✅ يقبل: ZIP, Java, Kotlin, Dart, Python, HTML, JS, صور، أي ملف
+                            </p>
+                        </div>
+                        <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFilesUpload(event)">
+                    </div>
+
+                    <div id="zipTab" class="tab-content">
+                        <div class="file-upload" onclick="document.getElementById('zipInput').click()">
+                            <p style="font-size: 40px; margin-bottom: 10px;">📦</p>
+                            <p style="color: #666;">اختر ملف ZIP</p>
+                            <p style="color: #999; font-size: 12px; margin-top: 10px;">
+                                ✅ يدعم جميع ملفات ZIP (أقل من 50 ميجابايت)
+                            </p>
+                        </div>
+                        <input type="file" id="zipInput" accept=".zip,application/zip,application/x-zip-compressed" style="display: none;" onchange="handleZipUpload(event)">
+                    </div>
+
+                    <div id="codeTab" class="tab-content">
+                        <div class="input-group">
+                            <label>اسم الملف (مع الامتداد):</label>
+                            <input type="text" id="codeFileName" placeholder="مثال: MainActivity.java أو main.dart" value="Main.java">
+                        </div>
+                        <div class="input-group">
+                            <label>الصق الكود هنا:</label>
+                            <textarea id="codeInput" class="code-input" placeholder="الصق كودك هنا... (Java, Kotlin, Dart, Python, HTML, JS, أي لغة)"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="processCode()">💾 حفظ الكود</button>
+                    </div>
+
+                    <div class="file-list" id="fileList"></div>
+                    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+                    <div id="uploadStatus" class="status-message"></div>
+
+                    <div class="project-info" id="projectInfo">
+                        <h3 style="margin-bottom: 15px; color: #333; font-size: 16px;">📊 تحليل المشروع</h3>
+                        <div class="info-item"><span class="info-label">النوع المكتشف:</span><span class="info-value" id="projectType">-</span></div>
+                        <div class="info-item"><span class="info-label">اللغة الرئيسية:</span><span class="info-value" id="mainLanguage">-</span></div>
+                        <div class="info-item"><span class="info-label">عدد الملفات:</span><span class="info-value" id="fileCount">-</span></div>
+                        <div class="info-item"><span class="info-label">الحجم الكلي:</span><span class="info-value" id="projectSize">-</span></div>
+                        <div class="info-item"><span class="info-label">جاهز للبناء:</span><span class="info-value" id="buildReady">-</span></div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-success" onclick="analyzeProject()">🔍 فحص وتحليل الملفات</button>
+                        <button class="btn btn-danger" onclick="clearAllFiles()">🗑️ مسح جميع الملفات</button>
+                    </div>
                 </div>
-                <div class="file-list" id="fileList"></div>
-                <div id="uploadStatus" class="status-message"></div>
-                <div class="file-preview" id="filePreview"></div>
-                <div class="project-info" id="projectInfo">
-                    <div class="info-item"><span>النوع:</span><span id="projectType">-</span></div>
-                    <div class="info-item"><span>اللغة:</span><span id="mainLanguage">-</span></div>
-                    <div class="info-item"><span>عدد الملفات:</span><span id="fileCount">-</span></div>
-                    <div class="info-item"><span>الحجم:</span><span id="projectSize">-</span></div>
-                    <div class="info-item"><span>جاهز:</span><span id="buildReady">-</span></div>
+
+                <!-- القسم 4: إعدادات البناء -->
+                <div class="section">
+                    <div class="section-title"><span>4</span><span>إعدادات البناء</span></div>
+                    <div class="input-group">
+                        <label>اسم التطبيق:</label>
+                        <input type="text" id="appName" value="MyApp">
+                    </div>
+                    <div class="input-group">
+                        <label>Package ID:</label>
+                        <input type="text" id="packageId" value="com.example.myapp">
+                    </div>
+                    <button class="btn btn-success" onclick="startBuild()" style="width: 100%; font-size: 16px; padding: 15px;" id="buildBtn">
+                        ⚡ بدء رفع المشروع وبناء APK
+                    </button>
+                    <div id="buildStatus" class="status-message"></div>
                 </div>
-                <div style="margin-top:10px">
-                    <button class="btn btn-success" onclick="analyzeProject()">🔍 فحص</button>
-                    <button class="btn btn-danger" onclick="clearAllFiles()">🗑️ مسح</button>
+
+                <!-- القسم 5: سجل العمليات السابقة -->
+                <div class="section">
+                    <div class="section-title"><span>📜</span><span>سجل عمليات البناء السابقة</span></div>
+                    <div id="buildHistory">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <p>لا توجد عمليات بناء سابقة</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="section">
-                <div class="section-title">4. إعدادات البناء</div>
-                <div class="input-group"><label>اسم التطبيق:</label><input type="text" id="appName" value="MyApp"></div>
-                <div class="input-group"><label>Package ID:</label><input type="text" id="packageId" value="com.example.myapp"></div>
-                <button class="btn btn-success" onclick="startBuild()" style="width:100%;padding:14px" id="buildBtn">⚡ بدء بناء APK</button>
-                <div id="buildStatus" class="status-message"></div>
-                <div id="logBox" style="background:#020617;color:#22c55e;padding:10px;border-radius:8px;margin-top:10px;font-family:monospace;font-size:11px;max-height:200px;overflow:auto;display:none"></div>
-                <div class="download-links" id="downloadLinks">
-                    <a href="#" class="download-link" id="apkDownloadLink" target="_blank">📦 تحميل APK المباشر</a>
-                    <a href="#" class="download-link" id="artifactLink" target="_blank">📦 فتح Artifact في GitHub (تحميل يدوي مضمون)</a>
-                    <a href="#" class="download-link" id="buildLink" target="_blank">⚙️ مراقبة البناء</a>
+        </div>
+
+        <!-- صفحة التنزيل -->
+        <div class="page" id="downloadPage">
+            <div class="content">
+                <div class="section">
+                    <div class="section-title"><span>🎉</span><span>تم الانتهاء من البناء!</span></div>
+                    <div id="downloadInfo" style="margin-bottom: 20px;"></div>
+                    <div class="download-links show" id="downloadLinks">
+                        <a href="#" class="download-link direct" id="directDownloadLink" download>
+                            📥 تنزيل APK مباشرة (اضغط هنا)
+                        </a>
+                        <a href="#" class="download-link" id="githubArtifactLink" target="_blank">
+                            📦 فتح صفحة Artifact في GitHub
+                        </a>
+                        <a href="#" class="download-link" id="buildLink" target="_blank">
+                            ⚙️ مراقبة عملية البناء في GitHub
+                        </a>
+                    </div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="btn btn-back" onclick="goHome()">🏠 العودة للصفحة الرئيسية</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<script>
-let githubToken='', selectedRepo=null, uploadedFiles=[], defaultBranch='main', detectedProjectType=null, lastDownloadUrl=null, lastApkBlob=null;
-try{ const sf=localStorage.getItem('uploadedFiles_v7'); if(sf){ const parsed=JSON.parse(sf); if(Array.isArray(parsed)) uploadedFiles=parsed; } }catch{}
-function saveFiles(){ try{ localStorage.setItem('uploadedFiles_v7', JSON.stringify(uploadedFiles.slice(0,30))); }catch{} }
 
-const API='https://api.github.com';
-function log(m){ const b=document.getElementById('logBox'); b.style.display='block'; b.innerHTML+=m+"<br>"; b.scrollTop=b.scrollHeight; }
-function showStatus(id,msg,type){ const el=document.getElementById(id); el.innerHTML=msg; el.className='status-message '+type; }
-function switchTab(e,n){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); e.target.classList.add('active'); document.getElementById(n+'Tab').classList.add('active'); }
-async function githubFetch(path, opts={}){ const res=await fetch(API+path,{...opts, headers:{'Authorization':`Bearer ${githubToken}`,'Accept':'application/vnd.github.v3+json','X-GitHub-Api-Version':'2022-11-28',...(opts.headers||{})}}); if(!res.ok){ const t=await res.text(); throw new Error(`${res.status} ${t.slice(0,200)}`);} return res.json(); }
+    <script>
+        // ============ Global Variables ============
+        let githubToken = '';
+        let selectedRepo = null;
+        let uploadedFiles = [];
+        let defaultBranch = 'main';
+        let detectedProjectType = null;
+        let currentBuildId = null;
+        let currentRunId = null;
 
-document.addEventListener('DOMContentLoaded',()=>{ const s=localStorage.getItem('githubToken'); if(s){ document.getElementById('githubToken').value=s; githubToken=s; } const fu=document.getElementById('fileUpload'); fu.addEventListener('dragover',e=>{e.preventDefault();}); fu.addEventListener('drop',e=>{e.preventDefault(); if(e.dataTransfer.files.length) handleMultipleFiles(e.dataTransfer.files);}); });
+        // ============ Initialization ============
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedToken();
+            setupDragAndDrop();
+            loadBuildHistory();
+        });
 
-async function testConnection(){ const t=document.getElementById('githubToken').value.trim(); if(!t) return showStatus('connectionStatus','أدخل التوكن','error'); showStatus('connectionStatus','<span class="spinner"></span> جاري...','info'); try{ const r=await fetch(API+'/user',{headers:{'Authorization':`token ${t}`}}); if(r.ok){ const d=await r.json(); githubToken=t; localStorage.setItem('githubToken',t); showStatus('connectionStatus',`✅ مرحبا ${d.login}`,'success'); refreshRepos(); } else showStatus('connectionStatus','❌ توكن خطأ أو بدون صلاحيات repo,workflow','error'); }catch(e){ showStatus('connectionStatus','❌ '+e.message,'error'); } }
-function clearToken(){ localStorage.removeItem('githubToken'); document.getElementById('githubToken').value=''; githubToken=''; showStatus('connectionStatus','تم المسح','info'); }
-async function refreshRepos(){ if(!githubToken) return showStatus('repoStatus','اربط GitHub أولاً','error'); showStatus('repoStatus','<span class="spinner"></span> تحميل...','info'); try{ const data=await githubFetch('/user/repos?per_page=50'); const list=document.getElementById('repoList'); list.innerHTML=''; data.forEach(repo=>{ const div=document.createElement('div'); div.className='repo-item'; div.innerHTML=`<strong>${repo.name}</strong> <small>(${repo.private?'خاص':'عام'})</small>`; div.onclick=()=>{ document.querySelectorAll('.repo-item').forEach(d=>d.classList.remove('selected')); div.classList.add('selected'); selectedRepo=repo; }; list.appendChild(div); }); showStatus('repoStatus',`✅ ${data.length} مستودع`,'success'); }catch(e){ showStatus('repoStatus','❌ '+e.message,'error'); } }
-function useSelectedRepo(){ if(!selectedRepo) return showStatus('repoStatus','اختر مستودع','error'); showStatus('repoStatus',`✅ ${selectedRepo.name}`,'success'); }
-async function createNewRepo(){ if(!githubToken) return showStatus('repoStatus','اربط أولاً','error'); const name=prompt('اسم المستودع:', 'apk-builder-'+Date.now()); if(!name) return; showStatus('repoStatus','<span class="spinner"></span> إنشاء...','info'); try{ const res=await fetch(API+'/user/repos',{method:'POST', headers:{'Authorization':`token ${githubToken}`,'Content-Type':'application/json'}, body:JSON.stringify({name, auto_init:true, private:false})}); if(res.ok){ selectedRepo=await res.json(); showStatus('repoStatus',`✅ ${selectedRepo.name}`,'success'); refreshRepos(); } else showStatus('repoStatus','❌ فشل','error'); }catch(e){ showStatus('repoStatus','❌ '+e.message,'error'); } }
+        function loadSavedToken() {
+            try {
+                const saved = localStorage.getItem('githubToken');
+                if (saved) {
+                    document.getElementById('githubToken').value = saved;
+                    githubToken = saved;
+                }
+            } catch (err) {
+                console.error('Error loading token:', err);
+            }
+        }
 
-function isBinaryFile(n){ const ext=n.split('.').pop().toLowerCase(); return ['png','jpg','jpeg','gif','ico','webp','pdf','zip','jar','class','ttf','otf','woff','mp3','mp4','apk'].includes(ext); }
-function fileToBase64(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(f); }); }
-function formatSize(b){ if(!b) return '0 B'; const u=['B','KB','MB']; let i=0; while(b>=1024&&i<u.length-1){ b/=1024; i++; } return b.toFixed(1)+' '+u[i]; }
+        // ============ Navigation ============
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const page = document.getElementById(pageId);
+            if (page) {
+                page.classList.add('active');
+                document.getElementById('backBtn').style.display = pageId === 'mainPage' ? 'none' : 'inline-flex';
+                document.getElementById('pageTitle').textContent = pageId === 'mainPage' ? '🏠 الصفحة الرئيسية' : '📥 صفحة التنزيل';
+                window.scrollTo(0, 0);
+            }
+        }
 
-async function handleFilesUpload(e){ if(e.target.files.length) await handleMultipleFiles(e.target.files); }
-async function handleMultipleFiles(files){ showStatus('uploadStatus','<span class="spinner"></span> قراءة...','info'); for(const file of files){ try{ const b64=await fileToBase64(file); uploadedFiles.push({name:file.name, content:b64, size:file.size, isBinary:isBinaryFile(file.name)}); }catch{} } renderFileList(); showStatus('uploadStatus',`✅ ${files.length} ملف`,'success'); }
+        function goHome() {
+            showPage('mainPage');
+        }
 
-async function handleZipUpload(e){
-  const file=e.target.files[0]; if(!file) return;
-  if(file.size<22){ showStatus('uploadStatus','❌ الملف فاضي (أقل من 22 بايت)','error'); return; }
-  showStatus('uploadStatus','<span class="spinner"></span> فحص ZIP...','info');
-  try{
-    const head=await file.slice(0,4).arrayBuffer(); const b=new Uint8Array(head);
-    const isZip=b[0]==0x50&&b[1]==0x4B;
-    if(!isZip){
-      const hex=Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join(' ');
-      throw new Error(`هذا الملف ليس ZIP. يبدأ بـ ${hex} وليس PK. هل رفعت ملف HTML أو APK بالغلط؟`);
-    }
-    const zip=await JSZip.loadAsync(file);
-    let c=0;
-    for(const [rawPath, entry] of Object.entries(zip.files)){
-      if(entry.dir) continue;
-      let path = rawPath.replace(/\\/g,'/').trim().replace(/^\/+/, '');
-      if(!path || path.includes('__MACOSX') || path.startsWith('.') || path.includes('/.')) continue;
-      if(path.length>200) continue;
-      try{
-        const content=await entry.async('base64');
-        if(!content || content.length<1) continue;
-        uploadedFiles.push({name:path, content, size:content.length*0.75, isBinary:isBinaryFile(path)});
-        c++;
-      }catch(e){ log('⚠️ تخطي ملف تالف: '+rawPath); }
-    }
-    if(c==0) throw new Error('ZIP فاضي من الداخل');
-    renderFileList(); analyzeProject();
-    showStatus('uploadStatus',`✅ تم استخراج ${c} ملف`,'success');
-  }catch(err){ showStatus('uploadStatus','❌ '+err.message,'error'); }
-}
+        // ============ Drag & Drop ============
+        function setupDragAndDrop() {
+            const el = document.getElementById('fileUpload');
+            if (!el) return;
+            
+            el.addEventListener('dragover', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.add('dragover');
+            });
+            el.addEventListener('dragleave', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.remove('dragover');
+            });
+            el.addEventListener('drop', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleMultipleFiles(e.dataTransfer.files);
+                }
+            });
+        }
 
-function processCode(){ const code=document.getElementById('codeInput').value; const fn=document.getElementById('codeFileName').value.trim(); if(!code.trim()) return showStatus('uploadStatus','أدخل الكود','error'); if(!fn) return showStatus('uploadStatus','أدخل اسم الملف','error'); const b64=btoa(unescape(encodeURIComponent(code))); uploadedFiles.push({name:fn, content:b64, size:code.length, isBinary:false}); renderFileList(); analyzeProject(); showStatus('uploadStatus',`✅ ${fn}`,'success'); }
-function previewCode(){ const code=document.getElementById('codeInput').value; const p=document.getElementById('filePreview'); if(!code.trim()){ p.classList.remove('show'); return; } p.textContent=code.slice(0,3000); p.classList.add('show'); }
-function renderFileList(){ const list=document.getElementById('fileList'); list.innerHTML=''; uploadedFiles.forEach((f,i)=>{ const d=document.createElement('div'); d.className='file-item'; d.innerHTML=`<span>📄 ${f.name}</span><span>${formatSize(f.size)}</span><button class="btn btn-danger" style="padding:2px 8px" onclick="removeFile(${i})">x</button>`; list.appendChild(d); }); saveFiles(); }
-function removeFile(i){ uploadedFiles.splice(i,1); saveFiles(); renderFileList(); }
-function clearAllFiles(){ uploadedFiles=[]; localStorage.removeItem('uploadedFiles_v7'); renderFileList(); document.getElementById('projectInfo').classList.remove('show'); showStatus('uploadStatus','تم المسح','info'); }
-function analyzeProject(){
-  if(!uploadedFiles.length) return showStatus('uploadStatus','لا ملفات','error');
-  const names=uploadedFiles.map(f=>f.name.toLowerCase());
-  let type='كود عام', lang='متعدد', ready='✅ نعم';
-  if(names.some(n=>n.includes('pubspec.yaml'))) type='Flutter';
-  else if(names.some(n=>n.endsWith('androidmanifest.xml'))) type='Android Native';
-  else if(names.some(n=>n.endsWith('build.gradle')||n.endsWith('build.gradle.kts'))) type='Android Native';
-  else if(names.some(n=>n.endsWith('.html'))) type='HTML/CSS/JS';
-  document.getElementById('projectType').textContent=type;
-  document.getElementById('mainLanguage').textContent=lang;
-  document.getElementById('fileCount').textContent=uploadedFiles.length;
-  document.getElementById('projectSize').textContent=formatSize(uploadedFiles.reduce((s,f)=>s+f.size,0));
-  document.getElementById('buildReady').textContent=ready;
-  document.getElementById('projectInfo').classList.add('show');
-  detectedProjectType={type};
-}
+        function showStatus(id, msg, type) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerHTML = msg;
+                el.className = 'status-message ' + type;
+            }
+        }
 
-// ======== الرفع والبناء المصحح ========
-async function uploadFileToRepo(rawPath, content){
-  // تنظيف المسار - هذا سبب الخطأ اللي شفته
-  let path = rawPath.replace(/\\/g,'/').trim().replace(/^\/+/, '').replace(/\/{2,}/g,'/');
-  if(!path || path==='.' || path.endsWith('/')) throw new Error(`مسار غير صالح: ${rawPath}`);
-  if(path.includes('..')) path = path.replace(/\.\.\//g,'');
-  
-  const apiPath=`/repos/${selectedRepo.full_name}/contents/${encodeURIComponent(path).replace(/%2F/g,'/')}`;
-  let sha=null;
-  // حاول تجيب sha بدون ما يطلع خطأ "file not found"
-  try{
-    const existing = await fetch(API+apiPath+`?ref=${encodeURIComponent(defaultBranch)}`, {
-      headers:{'Authorization':`Bearer ${githubToken}`,'Accept':'application/vnd.github.v3+json'}
-    });
-    if(existing.ok){
-      const j=await existing.json();
-      sha=j.sha;
-    }
-    // إذا 404 يعني ملف جديد - عادي
-  }catch(e){ /* ملف جديد */ }
-  
-  const body={message:`Add ${path} via V8`, content, branch:defaultBranch};
-  if(sha) body.sha=sha;
-  
-  // إعادة محاولة مع انتظار إذا المستودع جديد
-  for(let attempt=1; attempt<=3; attempt++){
-    try{
-      await githubFetch(apiPath,{method:'PUT', body:JSON.stringify(body)});
-      return;
-    }catch(err){
-      if(err.message.includes('could not be found') && attempt<3){
-        log(`⏳ انتظار تجهيز المستودع... محاولة ${attempt}`);
-        await new Promise(r=>setTimeout(r, 2000*attempt));
-        // حدث defaultBranch
-        try{
-          const repoData=await githubFetch(`/repos/${selectedRepo.full_name}`);
-          defaultBranch=repoData.default_branch||'main';
-          body.branch=defaultBranch;
-        }catch{}
-      } else {
-        throw err;
-      }
-    }
-  }
-}
+        function switchTab(event, tabName) {
+            if (!event || !event.target) return;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            const tabContent = document.getElementById(tabName + 'Tab');
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+        }
 
-function generateWorkflow(){
-  const type=detectedProjectType?.type||'';
-  const appName=document.getElementById('appName').value||'MyApp';
-  let steps='';
-  if(type.includes('Flutter')){
-    steps=`
+        // ============ GitHub Functions ============
+        async function testConnection() {
+            const token = document.getElementById('githubToken').value.trim();
+            if (!token) return showStatus('connectionStatus', '❌ الرجاء إدخال التوكن', 'error');
+            
+            showStatus('connectionStatus', '<span class="spinner"></span> جاري الاختبار...', 'info');
+            
+            try {
+                const res = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    githubToken = token;
+                    try {
+                        localStorage.setItem('githubToken', token);
+                    } catch (err) {
+                        console.error('Error saving token:', err);
+                    }
+                    showStatus('connectionStatus', `✅ مرحباً ${data.login}. الاتصال ناجح!`, 'success');
+                    refreshRepos();
+                } else {
+                    showStatus('connectionStatus', '❌ فشل الاتصال. تأكد من صحة التوكن وصلاحياته (repo, workflow)', 'error');
+                }
+            } catch (err) {
+                showStatus('connectionStatus', '❌ خطأ في الاتصال: ' + err.message, 'error');
+            }
+        }
+
+        function clearToken() {
+            try {
+                localStorage.removeItem('githubToken');
+            } catch (err) {
+                console.error('Error clearing token:', err);
+            }
+            document.getElementById('githubToken').value = '';
+            githubToken = '';
+            showStatus('connectionStatus', 'تم مسح التوكن', 'info');
+        }
+
+        async function refreshRepos() {
+            if (!githubToken) return showStatus('repoStatus', '❌ اتصل بـ GitHub أولاً', 'error');
+            
+            showStatus('repoStatus', '<span class="spinner"></span> جاري التحميل...', 'info');
+            
+            try {
+                const res = await fetch('https://api.github.com/user/repos?per_page=50', {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (res.ok) {
+                    const repos = await res.json();
+                    const list = document.getElementById('repoList');
+                    if (!list) return;
+                    
+                    list.innerHTML = '';
+                    repos.forEach(repo => {
+                        const div = document.createElement('div');
+                        div.className = 'repo-item';
+                        div.innerHTML = `<strong>${repo.name}</strong> <small style="color:#666">(${repo.private ? 'خاص' : 'عام'})</small>`;
+                        div.onclick = () => {
+                            document.querySelectorAll('.repo-item').forEach(d => d.classList.remove('selected'));
+                            div.classList.add('selected');
+                            selectedRepo = repo;
+                        };
+                        list.appendChild(div);
+                    });
+                    showStatus('repoStatus', `✅ تم تحميل ${repos.length} مستودع`, 'success');
+                } else {
+                    showStatus('repoStatus', '❌ فشل تحميل المستودعات', 'error');
+                }
+            } catch (err) {
+                showStatus('repoStatus', '❌ خطأ: ' + err.message, 'error');
+            }
+        }
+
+        function useSelectedRepo() {
+            if (!selectedRepo) return showStatus('repoStatus', '❌ اختر مستودعاً أولاً', 'error');
+            showStatus('repoStatus', `✅ تم اختيار: ${selectedRepo.name}`, 'success');
+        }
+
+        async function createNewRepo() {
+            if (!githubToken) return showStatus('repoStatus', '❌ اتصل بـ GitHub أولاً', 'error');
+            
+            const name = prompt('اسم المستودع الجديد:', 'apk-project-' + Date.now());
+            if (!name) return;
+            
+            showStatus('repoStatus', '<span class="spinner"></span> جاري الإنشاء...', 'info');
+            
+            try {
+                const res = await fetch('https://api.github.com/user/repos', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        auto_init: true,
+                        private: false
+                    })
+                });
+                
+                if (res.ok) {
+                    selectedRepo = await res.json();
+                    showStatus('repoStatus', `✅ تم إنشاء ${selectedRepo.name}`, 'success');
+                    refreshRepos();
+                } else {
+                    const err = await res.json().catch(() => ({}));
+                    showStatus('repoStatus', '❌ فشل الإنشاء: ' + (err.message || 'خطأ غير معروف'), 'error');
+                }
+            } catch (err) {
+                showStatus('repoStatus', '❌ خطأ: ' + err.message, 'error');
+            }
+        }
+
+        // ============ File Handling ============
+        function handleFilesUpload(e) {
+            if (e.target.files.length > 0) {
+                handleMultipleFiles(e.target.files);
+            }
+        }
+
+        async function handleMultipleFiles(files) {
+            showStatus('uploadStatus', '<span class="spinner"></span> جاري قراءة الملفات...', 'info');
+            
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (const file of files) {
+                try {
+                    const content = await fileToBase64(file);
+                    uploadedFiles.push({
+                        name: file.name,
+                        content: content,
+                        size: file.size,
+                        isBinary: isBinaryFile(file.name),
+                        type: file.type
+                    });
+                    successCount++;
+                } catch (err) {
+                    console.error('Error reading file:', file.name, err);
+                    errorCount++;
+                }
+            }
+            
+            renderFileList();
+            
+            if (errorCount > 0) {
+                showStatus('uploadStatus', `⚠️ تم إضافة ${successCount} ملف بنجاح، فشل ${errorCount} ملف`, 'info');
+            } else {
+                showStatus('uploadStatus', `✅ تم إضافة ${successCount} ملف بنجاح`, 'success');
+            }
+        }
+
+        async function handleZipUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // التحقق من الامتداد
+            const fileName = file.name.toLowerCase();
+            const isValidZip = fileName.endsWith('.zip') || 
+                              file.type === 'application/zip' || 
+                              file.type === 'application/x-zip-compressed' ||
+                              file.type === 'application/x-zip';
+            
+            if (!isValidZip) {
+                return showStatus('uploadStatus', '❌ يجب أن يكون ملف ZIP. الامتداد المقبول: .zip', 'error');
+            }
+
+            if (file.size > 50 * 1024 * 1024) {
+                return showStatus('uploadStatus', '❌ حجم الملف يتجاوز 50 ميجابايت. الرجاء استخدام ملف أصغر.', 'error');
+            }
+
+            showStatus('uploadStatus', '<span class="spinner"></span> جاري فك ضغط ZIP...', 'info');
+            const bar = document.getElementById('progressBar');
+            const fill = document.getElementById('progressFill');
+            if (bar) bar.style.display = 'block';
+            if (fill) fill.style.width = '20%';
+
+            try {
+                const zip = new JSZip();
+                const zipData = await zip.loadAsync(file);
+                if (fill) fill.style.width = '50%';
+                
+                let count = 0;
+                const entries = Object.entries(zipData.files);
+                
+                for (let i = 0; i < entries.length; i++) {
+                    const [path, entry] = entries[i];
+                    if (!entry.dir) {
+                        try {
+                            const content = await entry.async('base64');
+                            const size = entry._data ? (entry._data.uncompressedSize || 0) : 0;
+                            
+                            uploadedFiles.push({
+                                name: path,
+                                content: content,
+                                size: size,
+                                isBinary: isBinaryFile(path)
+                            });
+                            count++;
+                        } catch (e) {
+                            console.warn('Failed to extract:', path, e);
+                        }
+                    }
+                    
+                    // تحديث شريط التقدم
+                    if (fill) {
+                        const progress = 50 + ((i + 1) / entries.length) * 50;
+                        fill.style.width = progress + '%';
+                    }
+                }
+
+                renderFileList();
+                if (fill) fill.style.width = '100%';
+                showStatus('uploadStatus', `✅ تم استخراج ${count} ملف من ZIP بنجاح`, 'success');
+                
+                setTimeout(() => {
+                    if (bar) bar.style.display = 'none';
+                    if (fill) fill.style.width = '0%';
+                }, 1000);
+            } catch (err) {
+                showStatus('uploadStatus', '❌ فشل فك ضغط ZIP: ' + err.message + '<br>تأكد أن الملف ليس تالفاً أو محمياً بكلمة مرور.', 'error');
+                if (bar) bar.style.display = 'none';
+                if (fill) fill.style.width = '0%';
+            }
+        }
+
+        function processCode() {
+            const code = document.getElementById('codeInput').value;
+            const fileName = document.getElementById('codeFileName').value.trim();
+            
+            if (!code.trim()) return showStatus('uploadStatus', '❌ الرجاء إدخال الكود', 'error');
+            if (!fileName) return showStatus('uploadStatus', '❌ الرجاء إدخال اسم الملف', 'error');
+
+            try {
+                // تحويل النص إلى base64 بطريقة آمنة تدعم جميع الأحرف
+                const base64 = btoa(unescape(encodeURIComponent(code)));
+                
+                uploadedFiles.push({
+                    name: fileName,
+                    content: base64,
+                    size: new Blob([code]).size,
+                    isBinary: false
+                });
+                
+                renderFileList();
+                showStatus('uploadStatus', `✅ تم حفظ الكود في ${fileName}`, 'success');
+                
+                // مسح حقل الكود
+                document.getElementById('codeInput').value = '';
+            } catch (err) {
+                showStatus('uploadStatus', '❌ خطأ في حفظ الكود: ' + err.message, 'error');
+            }
+        }
+
+        function renderFileList() {
+            const list = document.getElementById('fileList');
+            if (!list) return;
+            
+            list.innerHTML = '';
+            
+            if (uploadedFiles.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">لا توجد ملفات مضافة</p>';
+                return;
+            }
+            
+            uploadedFiles.forEach((file, idx) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `
+                    <span class="file-name">${file.isBinary ? '📦' : '📄'} ${file.name}</span>
+                    <span class="file-size">${formatSize(file.size)}</span>
+                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="removeFile(${idx})">حذف</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function removeFile(idx) {
+            if (idx >= 0 && idx < uploadedFiles.length) {
+                uploadedFiles.splice(idx, 1);
+                renderFileList();
+            }
+        }
+
+        function clearAllFiles() {
+            uploadedFiles = [];
+            detectedProjectType = null;
+            renderFileList();
+            const projectInfo = document.getElementById('projectInfo');
+            if (projectInfo) {
+                projectInfo.classList.remove('show');
+            }
+            showStatus('uploadStatus', 'تم مسح جميع الملفات', 'info');
+        }
+
+        function analyzeProject() {
+            if (uploadedFiles.length === 0) {
+                return showStatus('uploadStatus', '❌ لا توجد ملفات للفحص', 'error');
+            }
+            
+            showStatus('uploadStatus', '<span class="spinner"></span> جاري تحليل الملفات...', 'info');
+
+            const names = uploadedFiles.map(f => f.name.toLowerCase());
+            const exts = {};
+            
+            names.forEach(n => {
+                const parts = n.split('.');
+                if (parts.length > 1) {
+                    const ext = parts.pop();
+                    exts[ext] = (exts[ext] || 0) + 1;
+                }
+            });
+
+            let type = 'غير محدد', lang = 'غير محدد', ready = '❌ لا';
+
+            if (names.some(n => n.includes('pubspec.yaml')) && names.some(n => n.includes('main.dart'))) {
+                type = 'Flutter'; lang = 'Dart'; ready = '✅ نعم';
+            } else if (names.some(n => n.includes('build.gradle')) && names.some(n => n.includes('androidmanifest.xml'))) {
+                type = 'Android Native';
+                lang = (exts['java'] || 0) > (exts['kt'] || 0) ? 'Java' : 'Kotlin';
+                ready = '✅ نعم';
+            } else if (names.some(n => n.includes('package.json')) && names.some(n => n.includes('android/'))) {
+                type = 'React Native'; lang = 'JavaScript'; ready = '✅ نعم';
+            } else if (exts['html'] > 0) {
+                type = 'Web App'; lang = 'HTML/JS'; ready = '⚠️ يحتاج تغليف';
+            } else if (exts['py'] > 0) {
+                type = 'Python'; lang = 'Python'; ready = '⚠️ يحتاج Kivy';
+            } else if (exts['java'] > 0 || exts['kt'] > 0) {
+                type = 'Java/Kotlin Code';
+                lang = exts['java'] > 0 ? 'Java' : 'Kotlin';
+                ready = '⚠️ يحتاج تكوين Android';
+            } else if (exts['dart'] > 0) {
+                type = 'Dart Code'; lang = 'Dart'; ready = '⚠️ يحتاج pubspec.yaml';
+            }
+
+            detectedProjectType = { type, lang, ready };
+
+            const totalSize = uploadedFiles.reduce((s, f) => s + (f.size || 0), 0);
+            
+            const projectType = document.getElementById('projectType');
+            const mainLanguage = document.getElementById('mainLanguage');
+            const fileCount = document.getElementById('fileCount');
+            const projectSize = document.getElementById('projectSize');
+            const buildReady = document.getElementById('buildReady');
+            const projectInfo = document.getElementById('projectInfo');
+            
+            if (projectType) projectType.textContent = type;
+            if (mainLanguage) mainLanguage.textContent = lang;
+            if (fileCount) fileCount.textContent = uploadedFiles.length + ' ملف';
+            if (projectSize) projectSize.textContent = formatSize(totalSize);
+            if (buildReady) buildReady.textContent = ready;
+            if (projectInfo) projectInfo.classList.add('show');
+
+            showStatus('uploadStatus', `✅ التحليل مكتمل: ${type}`, 'success');
+        }
+
+        // ============ Build ============
+        async function startBuild() {
+            if (!githubToken) return showStatus('buildStatus', '❌ اتصل بـ GitHub أولاً', 'error');
+            if (!selectedRepo) return showStatus('buildStatus', '❌ اختر مستودعاً أولاً', 'error');
+            if (uploadedFiles.length === 0) return showStatus('buildStatus', '❌ أضف ملفات أولاً', 'error');
+
+            const appName = document.getElementById('appName').value.trim() || 'MyApp';
+            const buildId = 'build_' + Date.now();
+            currentBuildId = buildId;
+
+            const btn = document.getElementById('buildBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner"></span> جاري الرفع والبناء...';
+            }
+
+            // حفظ في السجل كـ "قيد التنفيذ"
+            saveToHistory({
+                id: buildId,
+                appName: appName,
+                date: new Date().toISOString(),
+                status: 'pending',
+                repo: selectedRepo.full_name,
+                filesCount: uploadedFiles.length
+            });
+
+            try {
+                showStatus('buildStatus', '<span class="spinner"></span> الخطوة 1/4: تحديد الفرع الرئيسي...', 'info');
+                
+                const repoRes = await fetch(`https://api.github.com/repos/${selectedRepo.full_name}`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!repoRes.ok) {
+                    throw new Error('فشل في الوصول للمستودع');
+                }
+                
+                const repoData = await repoRes.json();
+                defaultBranch = repoData.default_branch || 'main';
+
+                showStatus('buildStatus', '<span class="spinner"></span> الخطوة 2/4: رفع الملفات إلى GitHub...', 'info');
+                
+                for (const file of uploadedFiles) {
+                    if (file.size > 50 * 1024 * 1024) {
+                        console.warn('Skipping large file:', file.name);
+                        continue;
+                    }
+                    await uploadFileToRepo(file.name, file.content);
+                }
+
+                showStatus('buildStatus', '<span class="spinner"></span> الخطوة 3/4: إنشاء ملف البناء...', 'info');
+                const workflow = generateWorkflow();
+                await uploadFileToRepo('.github/workflows/build.yml', btoa(workflow));
+
+                showStatus('buildStatus', '<span class="spinner"></span> الخطوة 4/4: تشغيل البناء...', 'info');
+                
+                const triggerRes = await fetch(`https://api.github.com/repos/${selectedRepo.full_name}/actions/workflows/build.yml/dispatches`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({ ref: defaultBranch })
+                });
+                
+                if (!triggerRes.ok) {
+                    throw new Error('فشل تشغيل البناء. تأكد من صلاحية workflow في التوكن.');
+                }
+
+                await new Promise(r => setTimeout(r, 3000));
+                
+                const runsRes = await fetch(`https://api.github.com/repos/${selectedRepo.full_name}/actions/runs?per_page=1`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                const runsData = await runsRes.json();
+                
+                if (!runsData.workflow_runs || runsData.workflow_runs.length === 0) {
+                    throw new Error('لم يتم العثور على عملية بناء.');
+                }
+                
+                const runId = runsData.workflow_runs[0].id;
+                currentRunId = runId;
+
+                // تحديث السجل
+                updateHistory(buildId, { runId: runId, status: 'pending' });
+
+                showStatus('buildStatus', `✅ تم بدء البناء! <a href="https://github.com/${selectedRepo.full_name}/actions/runs/${runId}" target="_blank" style="color:#0c5460; font-weight:bold;">متابعة في GitHub</a>`, 'info');
+                monitorBuild(runId, buildId, appName);
+
+            } catch (err) {
+                showStatus('buildStatus', '❌ خطأ: ' + err.message, 'error');
+                updateHistory(buildId, { status: 'failed', error: err.message });
+                
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '⚡ بدء رفع المشروع وبناء APK';
+                }
+            }
+        }
+
+        function generateWorkflow() {
+            const type = detectedProjectType ? detectedProjectType.type : '';
+            let buildSteps = '';
+
+            if (type === 'Flutter') {
+                buildSteps = `
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
-      with: { flutter-version: '3.22.3' }
+      with:
+        flutter-version: '3.x'
     - name: Build APK
       run: |
         flutter pub get
-        flutter build apk --debug`;
-  } else if(type.includes('Android')){
-    steps=`
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+        flutter build apk --release`;
+            } else if (type === 'Android Native') {
+                buildSteps = `
     - name: Build APK
       run: |
-        chmod +x gradlew || true
-        ./gradlew assembleDebug --stacktrace || gradle assembleDebug --stacktrace
-        ls -R app/build/outputs/apk/ || true`;
-  } else {
-    steps=`
+        if [ -f "gradlew" ]; then chmod +x gradlew; ./gradlew assembleRelease; fi`;
+            } else if (type === 'React Native') {
+                buildSteps = `
     - name: Setup Node
-      uses: actions/setup-node@v4
-      with: { node-version: '20' }
-    - name: Install and Build
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    - name: Install deps
+      run: npm install
+    - name: Build Android
       run: |
-        if [ -f package.json ]; then npm install; fi
-        if [ -f pubspec.yaml ]; then
-          echo "Flutter detected" && flutter pub get && flutter build apk --debug || true
-        fi
-        if [ -f build.gradle ] || [ -f build.gradle.kts ] || [ -f gradlew ]; then
-          chmod +x gradlew || true
-          ./gradlew assembleDebug || gradle assembleDebug || true
-        fi
-        # Capacitor fallback for HTML
-        if [ -f index.html ] && [ ! -f build.gradle ]; then
-          npm init -y || true
-          npm install @capacitor/core @capacitor/cli @capacitor/android || true
-          npx cap init "${appName}" com.example.myapp --web-dir=. || true
-          npx cap add android || true
-          npx cap copy || true
-          cd android && chmod +x gradlew && ./gradlew assembleDebug || true
-          cd ..
-        fi
-        find . -name "*.apk" -type f || true`;
-  }
+        cd android && chmod +x gradlew && ./gradlew assembleRelease`;
+            } else {
+                buildSteps = `
+    - name: Detect and Build
+      run: |
+        if [ -f "pubspec.yaml" ]; then
+          flutter pub get && flutter build apk --release
+        elif [ -f "build.gradle" ]; then
+          [ -f "gradlew" ] && chmod +x gradlew && ./gradlew assembleRelease
+        elif [ -f "package.json" ]; then
+          npm install
+          [ -d "android" ] && cd android && chmod +x gradlew && ./gradlew assembleRelease
+        else
+          mkdir -p output
+          echo "لم يتم اكتشاف هيكل مشروع صالح" > output/README.txt
+        fi`;
+            }
 
-  return `name: Build APK
+            return `name: Build APK
 on:
   push:
     branches: [ ${defaultBranch} ]
@@ -332,152 +943,149 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Java 17
-      uses: actions/setup-java@v4
+    - uses: actions/checkout@v3
+    - name: Setup Java
+      uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'
+        distribution: 'zulu'
         java-version: '17'
-${steps}
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
+${buildSteps}
+    - name: Upload APK
+      if: always()
+      uses: actions/upload-artifact@v3
       with:
-        name: app-apk
+        name: app-release
         path: |
-          **/build/outputs/apk/debug/*.apk
-          **/build/outputs/apk/release/*.apk
           **/*.apk
-          android/app/build/outputs/apk/debug/*.apk
+          **/*.txt
+          output/**
 `;
-}
-
-async function startBuild(){
-  if(!githubToken) return showStatus('buildStatus','اربط GitHub','error');
-  if(!selectedRepo) return showStatus('buildStatus','اختر مستودع','error');
-  if(!uploadedFiles.length) return showStatus('buildStatus','أضف ملفات','error');
-  const btn=document.getElementById('buildBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> جاري البناء...';
-  try{
-    log('🔍 تحديد الفرع...');
-    // انتظار إذا المستودع جديد
-    await new Promise(r=>setTimeout(r,1500));
-    try{
-      const repoData=await githubFetch(`/repos/${selectedRepo.full_name}`);
-      defaultBranch=repoData.default_branch||'main';
-      log('✅ الفرع: '+defaultBranch);
-    }catch(e){
-      defaultBranch='main';
-      log('⚠️ استخدام main كافتراضي');
-    }
-    // إذا المستودع جديد جداً، انتظر ثانيتين
-    if(!selectedRepo.default_branch){
-      log('⏳ مستودع جديد - انتظار تجهيزه...');
-      await new Promise(r=>setTimeout(r,3000));
-    }
-    log('📤 رفع '+uploadedFiles.length+' ملف إلى GitHub الرسمي...');
-    let okCount=0, skipCount=0;
-    for(const f of uploadedFiles){
-      if(!f.content || f.content.length<2){ log('⚠️ تخطي فاضي: '+f.name); skipCount++; continue; }
-      if(f.size>90*1024*1024){ log('⚠️ كبير جداً (>90MB) تخطي: '+f.name); skipCount++; continue; }
-      try{
-        await uploadFileToRepo(f.name, f.content);
-        log('✅ '+f.name);
-        okCount++;
-      }catch(err){
-        log('❌ فشل '+f.name+': '+err.message.slice(0,120));
-        if(err.message.includes('could not be found')){
-          log('💡 السبب: مسار الملف غير صالح أو المستودع جديد - تم إصلاحه في V8');
         }
-        // لا توقف كل الرفع إذا ملف واحد فشل
-      }
-      await new Promise(r=>setTimeout(r,300)); // تهدئة لتجنب Rate limit
-    }
-    log(`📊 تم رفع ${okCount} / ${uploadedFiles.length} (تخطي ${skipCount})`);
-    if(okCount===0) throw new Error('فشل رفع كل الملفات - تأكد أن ZIP يحتوي ملفات صالحة وليس مجلدات فاضية');
-    log('📝 إنشاء workflow مصحح...');
-    const wf=generateWorkflow();
-    await uploadFileToRepo('.github/workflows/build.yml', btoa(unescape(encodeURIComponent(wf))));
-    log('🚀 تشغيل البناء...');
-    const trig=await fetch(API+`/repos/${selectedRepo.full_name}/actions/workflows/build.yml/dispatches`,{method:'POST', headers:{'Authorization':`Bearer ${githubToken}`,'Content-Type':'application/json'}, body:JSON.stringify({ref:defaultBranch})});
-    if(!trig.ok){ const t=await trig.text(); throw new Error('فشل trigger: '+t.slice(0,200)); }
-    await new Promise(r=>setTimeout(r,4000));
-    const runs=await githubFetch(`/repos/${selectedRepo.full_name}/actions/runs?per_page=1`);
-    if(!runs.workflow_runs?.length) throw new Error('لم يبدأ البناء');
-    const run=runs.workflow_runs[0];
-    log('⏳ Run ID: '+run.id);
-    document.getElementById('buildLink').href=run.html_url;
-    document.getElementById('artifactLink').href=run.html_url;
-    monitorBuild(run.id);
-  }catch(e){ showStatus('buildStatus','❌ '+e.message,'error'); btn.disabled=false; btn.innerHTML='⚡ بدء بناء APK'; }
-}
 
-async function monitorBuild(runId){
-  let attempts=0;
-  const check=async()=>{
-    attempts++;
-    try{
-      const data=await githubFetch(`/repos/${selectedRepo.full_name}/actions/runs/${runId}`);
-      log(`⚙️ ${data.status} / ${data.conclusion||'...'}`);
-      if(data.status==='completed'){
-        const btn=document.getElementById('buildBtn'); btn.disabled=false; btn.innerHTML='⚡ بدء بناء APK';
-        if(data.conclusion==='success'){
-          showStatus('buildStatus','🎉 نجح البناء! جاري البحث عن APK...','success');
-          await downloadArtifactWithRetry(runId);
-        } else {
-          showStatus('buildStatus',`❌ فشل: ${data.conclusion}. راجع GitHub`,'error');
+        async function uploadFileToRepo(path, content) {
+            const url = `https://api.github.com/repos/${selectedRepo.full_name}/contents/${path}`;
+            
+            // التحقق مما إذا كان الملف موجوداً مسبقاً
+            let sha = null;
+            try {
+                const checkRes = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (checkRes.ok) {
+                    const existing = await checkRes.json();
+                    sha = existing.sha;
+                }
+            } catch (err) {
+                // الملف غير موجود، نتابع
+            }
+
+            const body = {
+                message: `Add/Update ${path}`,
+                content: content,
+                branch: defaultBranch
+            };
+            
+            if (sha) {
+                body.sha = sha;
+            }
+
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${githubToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify(body)
+            });
+            
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(`فشل رفع ${path}: ${err.message || res.statusText}`);
+            }
         }
-        return;
-      }
-      if(attempts<80) setTimeout(check,8000); else { showStatus('buildStatus','⏱️ طول، تابع من GitHub','info'); document.getElementById('buildBtn').disabled=false; }
-    }catch(e){ log('⚠️ '+e.message); if(attempts<80) setTimeout(check,8000); }
-  };
-  check();
-}
 
-async function downloadArtifactWithRetry(runId){
-  log('📦 البحث عن APK...');
-  let artifact=null;
-  for(let i=1;i<=12;i++){
-    try{
-      const d=await githubFetch(`/repos/${selectedRepo.full_name}/actions/runs/${runId}/artifacts?per_page=100`);
-      const list=(d.artifacts||[]).filter(a=>!a.expired);
-      log(`🔍 محاولة ${i}: ${list.length} artifact`);
-      artifact=list.find(a=>a.name==='app-apk')||list.find(a=>a.name.toLowerCase().includes('apk'))||list[0];
-      if(artifact) break;
-    }catch(e){ log('⚠️ '+e.message); }
-    await new Promise(r=>setTimeout(r,5000));
-  }
-  if(!artifact){ document.getElementById('downloadLinks').classList.add('show'); showStatus('buildStatus','✅ البناء نجح لكن Artifact تأخر. اضغط فتح Artifact وحمله يدويا','success'); return; }
-  log(`✅ وجدت ${artifact.name} (${Math.round(artifact.size_in_bytes/1024)}KB)`);
-  document.getElementById('artifactLink').href=`https://github.com/${selectedRepo.full_name}/actions/runs/${runId}`;
-  document.getElementById('buildLink').href=`https://github.com/${selectedRepo.full_name}/actions/runs/${runId}`;
-  try{
-    const resp=await fetch(API+`/repos/${selectedRepo.full_name}/actions/artifacts/${artifact.id}/zip`,{headers:{'Authorization':`Bearer ${githubToken}`,'Accept':'application/vnd.github+json'}});
-    if(!resp.ok) throw new Error('HTTP '+resp.status);
-    const zip=await JSZip.loadAsync(await resp.blob());
-    let apkFile=null; zip.forEach((p,f)=>{ if(!f.dir&&p.toLowerCase().endsWith('.apk')&&!apkFile) apkFile=f; });
-    if(!apkFile) throw new Error('لا APK داخل Artifact');
-    if(lastDownloadUrl) URL.revokeObjectURL(lastDownloadUrl);
-    const blob=await apkFile.async('blob');
-    lastDownloadUrl=URL.createObjectURL(blob);
-    const a=document.getElementById('apkDownloadLink');
-    a.href=lastDownloadUrl; a.download=(document.getElementById('appName').value||'MyApp')+'-debug.apk';
-    document.getElementById('downloadLinks').classList.add('show');
-    log(`🎉 APK جاهز: ${apkFile.name} (${(blob.size/1024/1024).toFixed(1)}MB)`);
-    showStatus('buildStatus','🎉 تم! اضغط تحميل APK','success');
-  }catch(e){
-    log('⚠️ تحميل تلقائي فشل: '+e.message);
-    document.getElementById('downloadLinks').classList.add('show');
-    showStatus('buildStatus','✅ البناء نجح. اضغط فتح Artifact وحمله يدويا من GitHub','success');
-  }
-}
-</script>
-<div style="margin:20px;padding:15px;background:#020617;border:1px solid #22c55e;border-radius:10px;font-size:12px;color:#94a3b8">
-<h3 style="color:#22c55e">🔒 هل GitHub رسمي؟</h3>
-<p>نعم، هذا هو GitHub الرسمي <b>https://github.com</b> مملوك لشركة مايكروسوفت. موقعي لا يصمم GitHub، فقط يستخدم واجهة برمجة التطبيقات الرسمية <b>api.github.com</b>.</p>
-<p>✅ تقدر تتأكد: افتح متصفح Chrome واكتب <b>github.com/h6566924-sys</b> بيدك - بتشوف نفس المستودعات.<br>
-✅ التوكن يبقى في جوالك فقط (localStorage) ولا يرسل لي أبداً.<br>
-✅ رابط التحميل دائماً يبدأ بـ <b>github.com/اسمك</b> وليس موقع غريب.</p>
-<p style="color:#fbbf24">⚠️ GitHub بالإنجليزي لأنه موقع أمريكي، لكن أزرار التحميل واضحة: Artifacts → app-apk.zip → ثم فك الضغط بتحصل APK.</p>
-</div>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
-</html>
+        async function monitorBuild(runId, buildId, appName) {
+            let attempts = 0;
+            const maxAttempts = 60;
+            
+            const check = async () => {
+                attempts++;
+                
+                try {
+                    const res = await fetch(`https://api.github.com/repos/${selectedRepo.full_name}/actions/runs/${runId}`, {
+                        headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    
+                    if (!res.ok) {
+                        throw new Error('فشل في جلب حالة البناء');
+                    }
+                    
+                    const data = await res.json();
+
+                    if (data.status === 'completed') {
+                        const btn = document.getElementById('buildBtn');
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.innerHTML = '⚡ بدء رفع المشروع وبناء APK';
+                        }
+
+                        if (data.conclusion === 'success') {
+                            updateHistory(buildId, { status: 'success', runId: runId });
+                            await showDownloadPage(runId, appName, buildId);
+                        } else {
+                            updateHistory(buildId, { status: 'failed', runId: runId, error: data.conclusion });
+                            showStatus('buildStatus', `❌ فشل البناء. <a href="https://github.com/${selectedRepo.full_name}/actions/runs/${runId}" target="_blank">راجع السجلات</a>`, 'error');
+                        }
+                        return;
+                    }
+
+                    if (attempts < maxAttempts) {
+                        setTimeout(check, 10000);
+                    } else {
+                        updateHistory(buildId, { status: 'timeout', runId: runId });
+                        showStatus('buildStatus', '⏱️ انتهى وقت الانتظار. يمكنك المتابعة من GitHub.', 'info');
+                        
+                        const btn = document.getElementById('buildBtn');
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.innerHTML = '⚡ بدء رفع المشروع وبناء APK';
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error monitoring build:', err);
+                    if (attempts < maxAttempts) {
+                        setTimeout(check, 10000);
+                    }
+                }
+            };
+            
+            check();
+        }
+
+        // ============ Download Page ============
+        async function showDownloadPage(runId, appName, buildId) {
+            showStatus('buildStatus', '🎉 تم البناء بنجاح! جاري تجهيز روابط التنزيل...', 'success');
+
+            try {
+                const artRes = await fetch(`https://api.github.com/repos/${selectedRepo.full_name}/actions/runs/${runId}/artifacts`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                const artData = await artRes.json();
+
+                const downloadInfo = document.getElementById('downloadInfo');
+                if (downloadInfo) {
+                    downloadInfo.innerHTML = `
+                        <div style="background: #d4edda; padding: 20px; border-radius: 10px; border: 2px solid #28a745;">
+                            <h3 style="color: #155724; margin-bot
