@@ -1,4 +1,4 @@
-name: Build APK
+name: Build APK V10
 on:
   push:
     branches: [ main ]
@@ -13,37 +13,28 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
     - name: Setup Node
       uses: actions/setup-node@v4
-      with: { node-version: '20' }
-    - name: Install and Build
+      with:
+        node-version: '20'
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.3'
+    - name: Build
       run: |
-        if [ -f package.json ]; then npm install; fi
-        if [ -f pubspec.yaml ]; then
-          echo "Flutter detected" && flutter pub get && flutter build apk --debug || true
-        fi
-        if [ -f build.gradle ] || [ -f build.gradle.kts ] || [ -f gradlew ]; then
-          chmod +x gradlew || true
-          ./gradlew assembleDebug || gradle assembleDebug || true
-        fi
-        # Capacitor fallback for HTML
-        if [ -f index.html ] && [ ! -f build.gradle ]; then
-          npm init -y || true
-          npm install @capacitor/core @capacitor/cli @capacitor/android || true
-          npx cap init "MyApp" com.example.myapp --web-dir=. || true
-          npx cap add android || true
-          npx cap copy || true
-          cd android && chmod +x gradlew && ./gradlew assembleDebug || true
-          cd ..
-        fi
-        find . -name "*.apk" -type f || true
-    - name: Upload APK artifact
+        echo "Building MyApp"
+        if [ -f pubspec.yaml ]; then flutter pub get; flutter build apk --debug || true; fi
+        if [ -f gradlew ]; then chmod +x gradlew; ./gradlew assembleDebug || true; fi
+        if [ -f build.gradle ] || [ -f build.gradle.kts ]; then gradle assembleDebug || true; fi
+        if [ -f package.json ]; then npm install || true; if [ -d android ]; then cd android; chmod +x gradlew; ./gradlew assembleDebug || true; cd ..; fi; fi
+        if [ -f index.html ] && [ ! -f build.gradle ]; then npm init -y || true; npm install @capacitor/core @capacitor/cli @capacitor/android || true; npx cap init "MyApp" com.example.myapp --web-dir=. || true; npx cap add android || true; npx cap copy || true; cd android; chmod +x gradlew; ./gradlew assembleDebug || true; fi
+        find . -name "*.apk" -type f
+    - name: Upload
       uses: actions/upload-artifact@v4
       with:
         name: app-apk
         path: |
-          **/build/outputs/apk/debug/*.apk
-          **/build/outputs/apk/release/*.apk
           **/*.apk
-          android/app/build/outputs/apk/debug/*.apk
